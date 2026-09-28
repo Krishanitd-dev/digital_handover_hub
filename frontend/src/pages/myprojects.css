@@ -1,0 +1,400 @@
+/* =========================
+   MY PROJECTS PAGE
+========================= */
+
+.my-projects-page {
+  padding: 32px 40px 50px;
+  min-height: 100vh;
+  background: #f7f5f2;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.projects-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.projects-header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #2f241f;
+}
+
+.projects-header p {
+  margin-top: 7px;
+  color: #756a64;
+}
+
+
+/* =========================
+   CREATE BUTTON
+========================= */
+
+.create-project-btn {
+  border: none;
+  background: #493628;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.create-project-btn:hover {
+  background: #773f14;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.project-form-container {
+  background: white;
+  border: 1px solid #e3ddd8;
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 30px;
+  max-width: 850px;
+}
+
+.project-form-container h2 {
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: #2f241f;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+  flex: 1;
+}
+
+.form-group label {
+  margin-bottom: 7px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #493628;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  border: 1px solid #d8d0ca;
+  border-radius: 7px;
+  padding: 11px 12px;
+  font-family: inherit;
+  font-size: 14px;
+  background: white;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #ac886e;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.cancel-btn,
+.save-btn {
+  padding: 11px 18px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cancel-btn {
+  border: 1px solid #d8d0ca;
+  background: white;
+  color: #493628;
+}
+
+.save-btn {
+  border: none;
+  background: #493628;
+  color: white;
+}
+
+
+/* =========================
+   PROJECT SECTION
+========================= */
+
+.projects-section {
+  margin-top: 20px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #2f241f;
+}
+
+.section-heading span {
+  color: #756a64;
+  font-size: 14px;
+}
+
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.empty-projects {
+  background: white;
+  border: 1px solid #e3ddd8;
+  border-radius: 12px;
+  padding: 60px 30px;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.empty-projects h3 {
+  margin: 5px 0;
+  color: #493628;
+}
+
+.empty-projects p {
+  color: #756a64;
+  margin-bottom: 22px;
+}
+
+.empty-create-btn {
+  border: none;
+  background: #493628;
+  color: white;
+  padding: 11px 18px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+
+/* =========================
+   PROJECT GRID
+========================= */
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 20px;
+}
+
+
+/* =========================
+   PROJECT CARD
+========================= */
+
+.project-card {
+  background: white;
+  border: 1px solid #e3ddd8;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.project-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.project-card-header h3 {
+  margin: 0 0 7px;
+  color: #2f241f;
+  font-size: 19px;
+}
+
+.project-card-header p {
+  margin: 0;
+  color: #756a64;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+
+/* =========================
+   PRIORITY
+========================= */
+
+.priority {
+  height: fit-content;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.priority.high {
+  background: #f5dfd9;
+  color: #8a3525;
+}
+
+.priority.medium {
+  background: #eee5d8;
+  color: #77552d;
+}
+
+.priority.low {
+  background: #e2eee5;
+  color: #376348;
+}
+
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress-section {
+  margin-top: 25px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #756a64;
+}
+
+.progress-header strong {
+  color: #493628;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 9px;
+  background: #ebe6e1;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #8d6e58;
+  border-radius: 10px;
+}
+
+
+/* =========================
+   PROJECT DETAILS
+========================= */
+
+.project-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #eee9e5;
+}
+
+.project-details div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.project-details span {
+  font-size: 12px;
+  color: #8a817b;
+}
+
+.project-details strong {
+  font-size: 13px;
+  color: #493628;
+}
+
+
+/* =========================
+   ACTIONS
+========================= */
+
+.project-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.project-actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.update-btn {
+  border: 1px solid #ac886e;
+  background: white;
+  color: #493628;
+}
+
+.handover-btn {
+  border: none;
+  background: #493628;
+  color: white;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+
+  .my-projects-page {
+    padding: 25px 18px;
+  }
+
+  .projects-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
