@@ -12,4 +12,5 @@ public class HandoverHubDbContext : DbContext
     }
 
     public DbSet<User> Users => Set<User>();
+    public DbSet<Project> Projects => Set<Project>();
 }

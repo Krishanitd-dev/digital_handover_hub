@@ -3,6 +3,7 @@ using System;
 using HandoverHub.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HandoverHub.API.Migrations
 {
     [DbContext(typeof(HandoverHubDbContext))]
-    partial class HandoverHubDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260928064813_AddProjects")]
+    partial class AddProjects
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,8 +37,8 @@ namespace HandoverHub.API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateOnly>("ExpectedCompletion")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("ExpectedCompletion")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Owner")
                         .IsRequired()
@@ -52,8 +55,8 @@ namespace HandoverHub.API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateOnly>("StartDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Status")
                         .IsRequired()

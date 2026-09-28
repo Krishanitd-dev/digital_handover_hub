@@ -25,7 +25,10 @@ function App() {
  )}
 
   {currentPage === "myprojects" && (
-        <MyProjects />
+  <MyProjects
+    currentPage={currentPage}
+    setCurrentPage={setCurrentPage}
+  />
 
       )}
     </>

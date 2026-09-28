@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import "./myprojects.css";
+import Sidebar from "../components/Sidebar";
 
-function MyProjects() {
+function MyProjects({ currentPage, setCurrentPage, user }) {
   const [projects, setProjects] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
@@ -50,7 +51,7 @@ function MyProjects() {
           priority: formData.priority,
           progress: Number(formData.progress),
           status: "In Progress",
-          owner: "Kris Dona",
+          owner: user?.displayName,
         }),
       });
 
@@ -78,7 +79,14 @@ function MyProjects() {
   };
 
   return (
-    <div className="my-projects-page">
+    <div className="dashboard-layout">
+    <Sidebar
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+    />
+
+    <div className="dashboard-main">
+      <div className="my-projects-page">
 
       <div className="projects-header">
         <div>
@@ -111,7 +119,7 @@ function MyProjects() {
                 name="projectName"
                 value={formData.projectName}
                 onChange={handleChange}
-                placeholder="Customer Portal"
+                placeholder="Enter project name"
                 required
               />
             </div>
@@ -123,7 +131,7 @@ function MyProjects() {
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                placeholder="Customer-facing web portal for managing customer accounts and requests."
+                placeholder="Enter project description."
                 required
               />
             </div>
@@ -345,7 +353,8 @@ function MyProjects() {
         )}
 
       </div>
-
+    </div>
+    </div>
     </div>
   );
 }

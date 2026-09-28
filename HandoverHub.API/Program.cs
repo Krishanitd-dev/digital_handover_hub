@@ -92,6 +92,26 @@ app.MapGet("/api/test", () =>
     return Results.Ok(new
     {message = "HandoverHub API is running"});
 });
+app.MapGet("/api/projects", async (HandoverHubDbContext db) =>
+{
+    var projects = await db.Projects
+        .OrderByDescending(p => p.Id)
+        .ToListAsync();
+
+    return Results.Ok(projects);
+});
+
+app.MapPost("/api/projects", async (
+    Project project,
+    HandoverHubDbContext db) =>
+{
+    db.Projects.Add(project);
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(project);
+});
+
 app.Run();
 
 public record CreateUserRequest(
