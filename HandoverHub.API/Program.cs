@@ -101,6 +101,18 @@ app.MapGet("/api/projects", async (HandoverHubDbContext db) =>
     return Results.Ok(projects);
 });
 
+app.MapGet("/api/projects/owner/{owner}", async (
+    string owner,
+    HandoverHubDbContext db) =>
+{
+    var projects = await db.Projects
+        .Where(p => p.Owner == owner)
+        .OrderByDescending(p => p.Id)
+        .ToListAsync();
+
+    return Results.Ok(projects);
+});
+
 app.MapPost("/api/projects", async (
     Project project,
     HandoverHubDbContext db) =>
@@ -112,8 +124,41 @@ app.MapPost("/api/projects", async (
     return Results.Ok(project);
 });
 
-app.Run();
+app.MapPut("/api/projects/{id}/progress", async (
+    int id,
+    ProgressUpdate request,
+    HandoverHubDbContext db) =>
+{
+    var project = await db.Projects.FindAsync(id);
 
+    if (project == null)
+    {
+        return Results.NotFound();
+    }
+
+    project.Progress = request.Progress;
+
+    if (project.Progress == 0)
+    {
+        project.Status = "Not Started";
+    }
+    else if (project.Progress >= 100)
+    {
+        project.Progress = 100;
+        project.Status = "Completed";
+    }
+    else
+    {
+        project.Status = "In Progress";
+    }
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(project);
+});
+
+
+app.Run();
 public record CreateUserRequest(
     string DisplayName,
     string Email,
@@ -124,3 +169,4 @@ public record LoginRequest(
     string Email,
     string Password
 );
+public record ProgressUpdate(int Progress);

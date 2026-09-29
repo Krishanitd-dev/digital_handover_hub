@@ -1,6 +1,6 @@
 import "./components.css";
 
-function Sidebar({ currentPage, setCurrentPage }) {
+function Sidebar({ currentPage, setCurrentPage, onLogout }) {
   return (
     <aside className="sidebar">
 
@@ -45,9 +45,14 @@ function Sidebar({ currentPage, setCurrentPage }) {
         >
           Takeovers
         </button>
-
-      </nav>
-
+ 
+      <button
+          className="nav-item"
+          onClick={onLogout}
+        >
+           Logout
+        </button>
+        </nav>   
     </aside>
   );
 }

@@ -10,6 +10,11 @@ function App() {
   const handleLogin = (userData) => {
    setUser(userData);
   }; 
+  const handleLogout = () => {
+  setUser(null);
+  setCurrentPage("dashboard");
+};
+
   
   if (!user) {
     return <Login onLogin={handleLogin} />;
@@ -19,15 +24,18 @@ function App() {
  {currentPage=== "dashboard" && (
   <Dashboard
       user={user}
-     currentPage={currentPage}
-       setCurrentPage={setCurrentPage}
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      onLogout={handleLogout}
   />
  )}
 
   {currentPage === "myprojects" && (
   <MyProjects
+    user={user}
     currentPage={currentPage}
     setCurrentPage={setCurrentPage}
+    onLogout={handleLogout}
   />
 
       )}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./myprojects.css";
 import Sidebar from "../components/Sidebar";
 
-function MyProjects({ currentPage, setCurrentPage, user }) {
+function MyProjects({ currentPage, setCurrentPage, user, onLogout, }) {
   const [projects, setProjects] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
@@ -15,17 +15,38 @@ function MyProjects({ currentPage, setCurrentPage, user }) {
     progress: 0,
   });
 
-  // Get projects from C# API
-  useEffect(() => {
-    fetch("http://localhost:5134/api/projects")
-      .then((response) => response.json())
-      .then((data) => {
-        setProjects(data);
-      })
-      .catch((error) => {
-        console.error("Error loading projects:", error);
-      });
-  }, []);
+
+ useEffect(() => {
+  console.log("Logged-in user:", user);
+  console.log("Display name:", user?.displayName);
+
+  if (!user?.displayName) {
+    return;
+  }
+
+  const url = `http://localhost:5134/api/projects/owner/${encodeURIComponent(
+    user.displayName
+  )}`;
+
+  console.log("Projects URL:", url);
+
+  fetch(url)
+    .then((response) => {
+      console.log("Response status:", response.status);
+      return response.json();
+    })
+    .then((data) => {
+      console.log("My projects:", data);
+      setProjects(data);
+    })
+    .catch((error) => {
+      console.error("Error loading projects:", error);
+    });
+}, [user]);
+
+
+
+
 
   const handleChange = (event) => {
     setFormData({
@@ -77,12 +98,61 @@ function MyProjects({ currentPage, setCurrentPage, user }) {
       console.error("Error creating project:", error);
     }
   };
+    const handleUpdateProgress = async (projectId, currentProgress) => {
+  const newProgress = window.prompt(
+    "Enter new progress (0-100):",
+    currentProgress
+  );
+
+  if (newProgress === null) {
+    return;
+  }
+
+  const progress = Number(newProgress);
+
+  if (isNaN(progress) || progress < 0 || progress > 100) {
+    alert("Please enter a number between 0 and 100.");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:5134/api/projects/${projectId}/progress`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          progress: progress,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to update progress");
+    }
+
+    const updatedProject = await response.json();
+
+    setProjects((currentProjects) =>
+      currentProjects.map((project) =>
+        project.id === updatedProject.id ? updatedProject : project
+      )
+    );
+  } catch (error) {
+    console.error("Error updating progress:", error);
+    alert("Could not update project progress.");
+  }
+};
+
 
   return (
     <div className="dashboard-layout">
     <Sidebar
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
+      onLogout={onLogout}
     />
 
     <div className="dashboard-main">
@@ -102,7 +172,7 @@ function MyProjects({ currentPage, setCurrentPage, user }) {
         </button>
       </div>
 
-      {/* CREATE PROJECT FORM */}
+  
 
       {showForm && (
         <div className="project-form-container">
@@ -218,7 +288,7 @@ function MyProjects({ currentPage, setCurrentPage, user }) {
         </div>
       )}
 
-      {/* PROJECT LIST */}
+    
 
       <div className="projects-section">
 
@@ -334,7 +404,12 @@ function MyProjects({ currentPage, setCurrentPage, user }) {
 
                 <div className="project-actions">
 
-                  <button className="update-btn">
+                  <button 
+                  className="update-progress-btn"
+                    onClick={() =>
+                    handleUpdateProgress(project.id, project.progress)
+                    }
+                  >
                     Update Progress
                   </button>
 

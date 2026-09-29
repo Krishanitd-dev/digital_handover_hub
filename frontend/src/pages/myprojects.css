@@ -88,17 +88,31 @@
 .form-group input,
 .form-group textarea,
 .form-group select {
+  width: 100%;
   border: 1px solid #d8d0ca;
   border-radius: 7px;
   padding: 11px 12px;
   font-family: inherit;
   font-size: 14px;
-  background: white;
+  background: #ffffff;
+  color: #493628;
+  box-sizing: border-box;
 }
 
-.form-group textarea {
-  min-height: 100px;
-  resize: vertical;
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #9a918b;
+  opacity: 1;
+}
+
+.form-group select {
+  color: #493628;
+  background: #ffffff;
+}
+
+.form-group select option {
+  background: #ffffff;
+  color: #493628;
 }
 
 .form-group input:focus,
@@ -106,6 +120,7 @@
 .form-group select:focus {
   outline: none;
   border-color: #ac886e;
+  background: #ffffff;
 }
 
 .form-row {
