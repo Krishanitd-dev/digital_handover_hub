@@ -46,6 +46,20 @@ const waitingForTakeover = handovers.filter(
   (handover) => handover.status === "Pending"
 ).length;
 
+const todayDate = new Date();
+todayDate.setHours(0, 0, 0, 0);
+
+const overdueProjects = projects.filter((project) => {
+  if (project.status === "Completed") {
+    return false;
+  }
+
+  const completionDate = new Date(project.expectedCompletion);
+  completionDate.setHours(0, 0, 0, 0);
+
+  return completionDate < todayDate;
+}).length;
+
   const today = new Date();
   const formattedDate = today.toLocaleDateString("en-NZ", {
     weekday: "long",
@@ -75,7 +89,7 @@ const waitingForTakeover = handovers.filter(
             <StatCard number={projects.length} label="Active Projects" />
             <StatCard number={activeHandovers} label="Active Handovers" />
             <StatCard number={waitingForTakeover} label="Waiting for Takeover" />
-            <StatCard number="0" label="Overdue" />   
+            <StatCard  number={overdueProjects} label="Overdue" />   
           </section>
 
           

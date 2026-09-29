@@ -3,6 +3,7 @@ import Login from "./pages/login";
 import Dashboard from "./pages/dashboard";
 import MyProjects from "./pages/myprojects";
 import Handovers from "./pages/handovers";
+import Takeovers from "./pages/takeovers";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -42,6 +43,14 @@ function App() {
       )}
   {currentPage === "handovers" && (
   <Handovers
+    user={user}
+    currentPage={currentPage}
+    setCurrentPage={setCurrentPage}
+    onLogout={handleLogout}
+  />
+)}
+{currentPage === "takeovers" && (
+  <Takeovers
     user={user}
     currentPage={currentPage}
     setCurrentPage={setCurrentPage}
