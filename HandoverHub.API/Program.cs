@@ -106,7 +106,7 @@ app.MapGet("/api/projects/owner/{owner}", async (
     HandoverHubDbContext db) =>
 {
     var projects = await db.Projects
-        .Where(p => p.Owner == owner)
+        .Where(p => p.Owner.ToLower() == owner.ToLower())
         .OrderByDescending(p => p.Id)
         .ToListAsync();
 
@@ -267,6 +267,63 @@ app.MapGet("/api/handovers", async (
     return Results.Ok(handovers);
 });
 
+app.MapPut("/api/handovers/{id}/accept", async (
+    int id,
+    AcceptHandoverRequest request,
+    HandoverHubDbContext db) =>
+{
+    var handover = await db.Handovers.FindAsync(id);
+
+    if (handover == null)
+    {
+        return Results.NotFound(new
+        {
+            message = "Handover not found."
+        });
+    }
+
+    if (handover.Status != "Pending")
+    {
+        return Results.BadRequest(new
+        {
+            message = "This handover has already been processed."
+        });
+    }
+
+    if (handover.ToUser != request.User)
+    {
+        return Results.BadRequest(new
+        {
+            message = "You cannot accept this handover."
+        });
+    }
+
+    var project = await db.Projects.FindAsync(handover.ProjectId);
+
+    if (project == null)
+    {
+        return Results.NotFound(new
+        {
+            message = "Project not found."
+        });
+    }
+
+ 
+    project.Owner = request.User;
+
+
+    handover.Status = "Accepted";
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(new
+    {
+        message = "Project takeover accepted.",
+        handover,
+        project
+    });
+});
+
 app.Run();
 public record CreateUserRequest(
     string DisplayName,
@@ -285,3 +342,4 @@ public record CreateHandoverRequest(
     string FromUser,
     string ToUser
 );
+public record AcceptHandoverRequest(string User);
