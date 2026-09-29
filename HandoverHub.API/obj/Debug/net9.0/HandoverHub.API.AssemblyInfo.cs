@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HandoverHub.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2d424d2c07e073c11e6ea89ea43a9c65e78a6d30")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f29b6e29b1d5fd570c31001f131cd2387b1413df")]
 [assembly: System.Reflection.AssemblyProductAttribute("HandoverHub.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HandoverHub.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

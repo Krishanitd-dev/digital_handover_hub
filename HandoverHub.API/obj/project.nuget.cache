@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hxqLOfbD8co=",
+  "dgSpecHash": "CgWj+ekczvM=",
   "success": true,
-  "projectFilePath": "C:\\Users\\tdkri\\Desktop\\DevProjects\\Digi_Handover_Hub\\HandoverHub.API\\HandoverHub.API.csproj",
+  "projectFilePath": "C:\\Users\\tdkri\\Desktop\\DevProjects\\digital_handover_hub\\HandoverHub.API\\HandoverHub.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\tdkri\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\tdkri\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.8\\microsoft.aspnetcore.openapi.9.0.8.nupkg.sha512",
