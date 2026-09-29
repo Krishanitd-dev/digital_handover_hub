@@ -109,7 +109,6 @@ app.MapGet("/api/projects/owner/{owner}", async (
         .Where(p => p.Owner.ToLower() == owner.ToLower())
         .OrderByDescending(p => p.Id)
         .ToListAsync();
-
     return Results.Ok(projects);
 });
 
@@ -118,9 +117,7 @@ app.MapPost("/api/projects", async (
     HandoverHubDbContext db) =>
 {
     db.Projects.Add(project);
-
     await db.SaveChangesAsync();
-
     return Results.Ok(project);
 });
 
@@ -130,14 +127,12 @@ app.MapPut("/api/projects/{id}/progress", async (
     HandoverHubDbContext db) =>
 {
     var project = await db.Projects.FindAsync(id);
-
     if (project == null)
     {
         return Results.NotFound();
     }
 
     project.Progress = request.Progress;
-
     if (project.Progress == 0)
     {
         project.Status = "Not Started";
@@ -153,7 +148,6 @@ app.MapPut("/api/projects/{id}/progress", async (
     }
 
     await db.SaveChangesAsync();
-
     return Results.Ok(project);
 });
 
@@ -178,7 +172,6 @@ app.MapPost("/api/handovers", async (
     HandoverHubDbContext db) =>
 {
     var project = await db.Projects.FindAsync(request.ProjectId);
-
     if (project == null)
     {
         return Results.NotFound(new
@@ -273,7 +266,6 @@ app.MapPut("/api/handovers/{id}/accept", async (
     HandoverHubDbContext db) =>
 {
     var handover = await db.Handovers.FindAsync(id);
-
     if (handover == null)
     {
         return Results.NotFound(new
@@ -289,7 +281,6 @@ app.MapPut("/api/handovers/{id}/accept", async (
             message = "This handover has already been processed."
         });
     }
-
     if (handover.ToUser != request.User)
     {
         return Results.BadRequest(new
@@ -299,7 +290,6 @@ app.MapPut("/api/handovers/{id}/accept", async (
     }
 
     var project = await db.Projects.FindAsync(handover.ProjectId);
-
     if (project == null)
     {
         return Results.NotFound(new
@@ -307,15 +297,10 @@ app.MapPut("/api/handovers/{id}/accept", async (
             message = "Project not found."
         });
     }
-
  
     project.Owner = request.User;
-
-
     handover.Status = "Accepted";
-
     await db.SaveChangesAsync();
-
     return Results.Ok(new
     {
         message = "Project takeover accepted.",
@@ -323,7 +308,6 @@ app.MapPut("/api/handovers/{id}/accept", async (
         project
     });
 });
-
 app.Run();
 public record CreateUserRequest(
     string DisplayName,

@@ -4,12 +4,9 @@ import Topbar from "../components/Topbar";
 import StatCard from "../components/StatCard";
 import { useEffect, useState } from "react";
 
-
-
 function Dashboard({ user, currentPage, setCurrentPage, onLogout, }) {
   const [projects, setProjects] = useState([]);
   const [handovers, setHandovers] = useState([]);
-
 useEffect(() => {
   fetch("http://localhost:5134/api/projects")
     .then((response) => response.json())
@@ -73,9 +70,7 @@ const overdueProjects = projects.filter((project) => {
       <Sidebar  currentPage={currentPage} setCurrentPage={setCurrentPage} onLogout={onLogout}/>
       <div className="dashboard-main">
       <Topbar user={user} />
-      <main className="dashboard-content">
-          
-       
+      <main className="dashboard-content">  
         <section className="welcome-section">
         <p className="date-label"> {formattedDate}
           </p>
@@ -83,7 +78,6 @@ const overdueProjects = projects.filter((project) => {
          <p className="welcome-text"> Here's an overview of projects and handovers across your team.</p>
           </section>
 
-          
           <section className="stats-grid">
        
             <StatCard number={projects.length} label="Active Projects" />
@@ -91,8 +85,7 @@ const overdueProjects = projects.filter((project) => {
             <StatCard number={waitingForTakeover} label="Waiting for Takeover" />
             <StatCard  number={overdueProjects} label="Overdue" />   
           </section>
-
-          
+    
           <section className="dashboard-section">
             <div className="section-header">
             <div>
@@ -106,7 +99,6 @@ const overdueProjects = projects.filter((project) => {
               <h3>No projects yet</h3>
               <p>Projects created by team members will appear here.</p>
               </div>
-
 
               ) : (
                 <div className="team-projects-list">

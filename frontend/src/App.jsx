@@ -8,7 +8,6 @@ import Takeovers from "./pages/takeovers";
 function App() {
   const [user, setUser] = useState(null);
   const [currentPage, setCurrentPage] = useState("dashboard");
-
   const handleLogin = (userData) => {
    setUser(userData);
   }; 
@@ -17,7 +16,6 @@ function App() {
   setCurrentPage("dashboard");
 };
 
-  
   if (!user) {
     return <Login onLogin={handleLogin} />;
 }

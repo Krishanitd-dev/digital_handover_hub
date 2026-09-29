@@ -3,13 +3,10 @@ import "./components.css";
 function Sidebar({ currentPage, setCurrentPage, onLogout }) {
   return (
     <aside className="sidebar">
-
       <div className="sidebar-logo">
         Handover<span>Hub</span>
       </div>
-
       <nav className="sidebar-nav">
-
         <button
           className={`nav-item ${
             currentPage === "dashboard" ? "active" : ""
@@ -18,7 +15,6 @@ function Sidebar({ currentPage, setCurrentPage, onLogout }) {
         >
           Dashboard
         </button>
-
         <button
           className={`nav-item ${
             currentPage === "myprojects" ? "active" : ""
@@ -27,7 +23,6 @@ function Sidebar({ currentPage, setCurrentPage, onLogout }) {
         >
           My Projects
         </button>
-
         <button
           className={`nav-item ${
             currentPage === "handovers" ? "active" : ""
@@ -56,5 +51,4 @@ function Sidebar({ currentPage, setCurrentPage, onLogout }) {
     </aside>
   );
 }
-
 export default Sidebar;

@@ -9,10 +9,8 @@ function Login({ onLogin }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     setError("");
     setLoading(true);
-
     try {
       const response = await fetch(
         "http://localhost:5134/api/auth/login",
@@ -27,16 +25,13 @@ function Login({ onLogin }) {
         }),
         }
       );
-
       if (!response.ok) {
         setError("Invalid email or password.");
         return;
       }
 
     const data = await response.json();
-
     console.log("Login successful:", data);
-
       onLogin(data);
     } catch (error) {
       console.error(error);
@@ -60,21 +55,21 @@ function Login({ onLogin }) {
           <div className="form-group">
         <label htmlFor="email">Email</label>
        <input
-            id="email"
-              type="email"
-            placeholder="Enter your email"
-              value={email}
-             onChange={(event) => setEmail(event.target.value)}
-              required
+          id="email"
+           type="email"
+        placeholder="Enter your email"
+          value={email}
+         onChange={(event) => setEmail(event.target.value)}
+        required
             />
           </div>
           <div className="form-group">
            <label>Password</label>
           <input
             id="password"
-              type="password"
+          type="password"
             placeholder="Enter your password"
-             value={password}
+           value={password}
             onChange={(event) => setPassword(event.target.value)}
             required
             />
@@ -84,11 +79,8 @@ function Login({ onLogin }) {
             </p>
           )}
 
-          <button
-            type="submit"
-            className="login-button"
-            disabled={loading}>
-            {loading ? "Signing in..." : "Sign in"}
+          <button type="submit" className="login-button" disabled={loading}>
+          {loading ? "Signing in..." : "Sign in"}
      </button>
      </form>
     </div>

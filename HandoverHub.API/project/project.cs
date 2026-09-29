@@ -1,5 +1,4 @@
 namespace HandoverHub.API.Models;
-
 public class Project
 {
     public int Id { get; set; }
