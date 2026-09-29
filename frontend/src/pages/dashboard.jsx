@@ -5,8 +5,10 @@ import StatCard from "../components/StatCard";
 import { useEffect, useState } from "react";
 
 
+
 function Dashboard({ user, currentPage, setCurrentPage, onLogout, }) {
   const [projects, setProjects] = useState([]);
+  const [handovers, setHandovers] = useState([]);
 
 useEffect(() => {
   fetch("http://localhost:5134/api/projects")
@@ -18,6 +20,32 @@ useEffect(() => {
       console.error("Error loading dashboard projects:", error);
     });
 }, []);
+
+useEffect(() => {
+  fetch("http://localhost:5134/api/handovers")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to load handovers");
+      }
+
+      return response.json();
+    })
+    .then((data) => {
+      setHandovers(data);
+    })
+    .catch((error) => {
+      console.error("Error loading handovers:", error);
+    });
+}, []);
+
+const activeHandovers = handovers.filter(
+  (handover) => handover.status === "Pending"
+).length;
+
+const waitingForTakeover = handovers.filter(
+  (handover) => handover.status === "Pending"
+).length;
+
   const today = new Date();
   const formattedDate = today.toLocaleDateString("en-NZ", {
     weekday: "long",
@@ -43,18 +71,11 @@ useEffect(() => {
 
           
           <section className="stats-grid">
-            <StatCard
-              number="—"
-              label="Active Projects"/>
-            <StatCard
-              number="—"
-              label="Active Handovers"/>
-            <StatCard
-              number="—"
-              label="Waiting for Takeover"/>
-            <StatCard
-              number="—"
-              label="Overdue"/>
+       
+            <StatCard number={projects.length} label="Active Projects" />
+            <StatCard number={activeHandovers} label="Active Handovers" />
+            <StatCard number={waitingForTakeover} label="Waiting for Takeover" />
+            <StatCard number="0" label="Overdue" />   
           </section>
 
           
@@ -71,6 +92,8 @@ useEffect(() => {
               <h3>No projects yet</h3>
               <p>Projects created by team members will appear here.</p>
               </div>
+
+
               ) : (
                 <div className="team-projects-list">
               {projects.map((project) => (
@@ -129,21 +152,58 @@ useEffect(() => {
 
 
           <section className="dashboard-section">
-            <div className="section-header">
-              <div><h2>Handover Activity</h2>
-              <p>  Recent project handovers and takeovers across the team. </p>
-            </div>
+  <div className="section-header">
+    <div>
+      <h2>Handover Activity</h2>
+      <p>Recent project handovers and takeovers across the team.</p>
+    </div>
+  </div>
+
+  {handovers.length === 0 ? (
+    <div className="empty-state">
+      <div className="empty-icon">↗</div>
+      <h3>No handover activity</h3>
+      <p>
+        Handover activity will appear here when a project is transferred.
+      </p>
+    </div>
+  ) : (
+    <div className="handover-activity-list">
+      {handovers.map((handover) => {
+        const project = projects.find(
+          (project) => project.id === handover.projectId
+        );
+
+        return (
+          <div className="handover-activity-item" key={handover.id}>
+            <div className="handover-activity-icon">
+              ↗
             </div>
 
+            <div className="handover-activity-details">
+              <h3>
+                {project
+                  ? project.projectName
+                  : `Project #${handover.projectId}`}
+              </h3>
 
-            <div className="empty-state">
-            <div className="empty-icon"> ↗
+              <p>
+                <strong>{handover.fromUser}</strong>
+                {" handed over this project to "}
+                <strong>{handover.toUser}</strong>
+              </p>
+
+              <span className="handover-status">
+                {handover.status}
+              </span>
             </div>
-            <h3>No handover activity</h3>
-          <p>Handover activity will appear here when a project is transferred.</p>
-        </div>
-      </section>
-      </main>
+          </div>
+              );
+            })}
+          </div>
+        )}
+          </section>
+        </main>
       </div>
     </div>
   );

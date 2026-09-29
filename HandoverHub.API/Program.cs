@@ -157,6 +157,115 @@ app.MapPut("/api/projects/{id}/progress", async (
     return Results.Ok(project);
 });
 
+app.MapGet("/api/users", async (
+    HandoverHubDbContext db) =>
+{
+    var users = await db.Users
+        .Select(u => new
+        {
+            id = u.Id,
+            displayName = u.DisplayName,
+            email = u.Email,
+            role = u.Role
+        })
+        .OrderBy(u => u.displayName)
+        .ToListAsync();
+
+    return Results.Ok(users);
+});
+app.MapPost("/api/handovers", async (
+    CreateHandoverRequest request,
+    HandoverHubDbContext db) =>
+{
+    var project = await db.Projects.FindAsync(request.ProjectId);
+
+    if (project == null)
+    {
+        return Results.NotFound(new
+        {
+            message = "Project not found."
+        });
+    }
+
+    if (project.Owner != request.FromUser)
+    {
+        return Results.BadRequest(new
+        {
+            message = "Only the project owner can send a handover."
+        });
+    }
+
+    if (request.FromUser == request.ToUser)
+    {
+        return Results.BadRequest(new
+        {
+            message = "You cannot hand over a project to yourself."
+        });
+    }
+
+    var existingHandover = await db.Handovers
+        .FirstOrDefaultAsync(h =>
+            h.ProjectId == request.ProjectId &&
+            h.Status == "Pending");
+
+    if (existingHandover != null)
+    {
+        return Results.BadRequest(new
+        {
+            message = "This project already has a pending handover."
+        });
+    }
+
+    var handover = new Handover
+    {
+        ProjectId = request.ProjectId,
+        FromUser = request.FromUser,
+        ToUser = request.ToUser,
+        Status = "Pending"
+    };
+
+    db.Handovers.Add(handover);
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(handover);
+});
+
+app.MapGet("/api/handovers/from/{user}", async (
+    string user,
+    HandoverHubDbContext db) =>
+{
+    var handovers = await db.Handovers
+        .Where(h => h.FromUser == user)
+        .OrderByDescending(h => h.CreatedAt)
+        .ToListAsync();
+
+    return Results.Ok(handovers);
+});
+
+app.MapGet("/api/handovers/to/{user}", async (
+    string user,
+    HandoverHubDbContext db) =>
+{
+    var handovers = await db.Handovers
+        .Where(h =>
+            h.ToUser == user &&
+            h.Status == "Pending")
+        .OrderByDescending(h => h.CreatedAt)
+        .ToListAsync();
+
+    return Results.Ok(handovers);
+});
+
+app.MapGet("/api/handovers", async (
+    HandoverHubDbContext db) =>
+{
+    var handovers = await db.Handovers
+        .OrderByDescending(h => h.CreatedAt)
+        .ToListAsync();
+
+    return Results.Ok(handovers);
+});
 
 app.Run();
 public record CreateUserRequest(
@@ -170,3 +279,9 @@ public record LoginRequest(
     string Password
 );
 public record ProgressUpdate(int Progress);
+
+public record CreateHandoverRequest(
+    int ProjectId,
+    string FromUser,
+    string ToUser
+);

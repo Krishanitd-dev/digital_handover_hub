@@ -6,6 +6,11 @@ function MyProjects({ currentPage, setCurrentPage, user, onLogout, }) {
   const [projects, setProjects] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
+  const [showHandoverForm, setShowHandoverForm] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [selectedTeamMember, setSelectedTeamMember] = useState("");
+
   const [formData, setFormData] = useState({
     projectName: "",
     description: "",
@@ -44,7 +49,67 @@ function MyProjects({ currentPage, setCurrentPage, user, onLogout, }) {
     });
 }, [user]);
 
+const loadTeamMembers = async () => {
+  try {
+    const response = await fetch("http://localhost:5134/api/users");
 
+    if (!response.ok) {
+      throw new Error("Failed to load team members");
+    }
+
+    const data = await response.json();
+
+    setTeamMembers(data);
+  } catch (error) {
+    console.error("Error loading team members:", error);
+  }
+};
+
+const handleHandoverClick = async (project) => {
+  setSelectedProject(project);
+  setSelectedTeamMember("");
+
+  await loadTeamMembers();
+
+  setShowHandoverForm(true);
+};
+const handleSendHandover = async (event) => {
+  event.preventDefault();
+
+  if (!selectedTeamMember) {
+    alert("Please select a team member.");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5134/api/handovers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        projectId: selectedProject.id,
+        fromUser: user.displayName,
+        toUser: selectedTeamMember,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to create handover");
+    }
+
+    alert("Handover sent successfully.");
+
+    setShowHandoverForm(false);
+    setSelectedProject(null);
+    setSelectedTeamMember("");
+  } catch (error) {
+    console.error("Error sending handover:", error);
+    alert(error.message);
+  }
+};
 
 
 
@@ -172,7 +237,72 @@ function MyProjects({ currentPage, setCurrentPage, user, onLogout, }) {
         </button>
       </div>
 
-  
+  {showHandoverForm && selectedProject && (
+  <div className="project-form-container">
+
+    <h2>Handover Project</h2>
+
+    <p>
+      Select a team member to hand over{" "}
+      <strong>{selectedProject.projectName}</strong>.
+    </p>
+
+    <form onSubmit={handleSendHandover}>
+
+      <div className="form-group">
+        <label>Team Member</label>
+
+        <select
+          value={selectedTeamMember}
+          onChange={(event) =>
+            setSelectedTeamMember(event.target.value)
+          }
+          required
+        >
+          <option value="">Select team member</option>
+
+          {teamMembers
+            .filter(
+              (member) =>
+                member.displayName !== user.displayName
+            )
+            .map((member) => (
+              <option
+                key={member.id}
+                value={member.displayName}
+              >
+                {member.displayName}
+              </option>
+            ))}
+        </select>
+      </div>
+
+      <div className="form-buttons">
+
+        <button
+          type="button"
+          className="cancel-btn"
+          onClick={() => {
+            setShowHandoverForm(false);
+            setSelectedProject(null);
+            setSelectedTeamMember("");
+          }}
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          className="save-btn"
+        >
+          Send Handover
+        </button>
+
+      </div>
+
+        </form>
+      </div>
+        )}
 
       {showForm && (
         <div className="project-form-container">
@@ -413,7 +543,9 @@ function MyProjects({ currentPage, setCurrentPage, user, onLogout, }) {
                     Update Progress
                   </button>
 
-                  <button className="handover-btn">
+                  <button
+                   className="handover-btn"
+                    onClick={() => handleHandoverClick(project)}>
                     Handover
                   </button>
 

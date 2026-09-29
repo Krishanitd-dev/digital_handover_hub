@@ -2,6 +2,7 @@ import { useState } from "react";
 import Login from "./pages/login";
 import Dashboard from "./pages/dashboard";
 import MyProjects from "./pages/myprojects";
+import Handovers from "./pages/handovers";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -39,6 +40,14 @@ function App() {
   />
 
       )}
+  {currentPage === "handovers" && (
+  <Handovers
+    user={user}
+    currentPage={currentPage}
+    setCurrentPage={setCurrentPage}
+    onLogout={handleLogout}
+  />
+)}
     </>
   );
 }
