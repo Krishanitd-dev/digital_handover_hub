@@ -18,6 +18,10 @@
   border-right: 1px solid #e8e1dc;
   padding: 24px 14px;
   box-sizing: border-box;
+
+  
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-logo {
@@ -35,6 +39,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  flex: 1;
 }
 
 .nav-item {
@@ -42,18 +47,22 @@
   padding: 10px 12px;
   border-radius: 7px;
   color: #62574f;
+  background: #ffffff;
   text-decoration: none;
   font-size: 13px;
   line-height: 1.4;
 }
 
-.nav-item:hover,
-.nav-item.active {
+.nav-item:hover {
   background: #f1ece8;
   color: #493628;
 }
 
-
+.nav-item.active {
+  background: #f1ece8;
+  color: #493628;
+  font-weight: 600;
+}
 
 .topbar {
   height: 64px;
@@ -277,3 +286,6 @@
     padding: 0 18px;
   }
 }
+
+
+
